@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<title>UIS Storyboard Editor</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- SVG Icon Sprite -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><defs>
+<symbol id="icon-new" viewBox="0 0 16 16"><path d="M9 1H3a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V6z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><polyline points="9,1 9,6 14,6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="icon-save" viewBox="0 0 16 16"><path d="M13 14H3a1 1 0 01-1-1V3a1 1 0 011-1h7.5L14 5.5V13a1 1 0 01-1 1z" stroke="currentColor" stroke-width="1.5" fill="none"/><polyline points="11,14 11,9 5,9 5,14" stroke="currentColor" stroke-width="1.5" fill="none"/><polyline points="5,2 5,6 10,6" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="icon-folder-open" viewBox="0 0 16 16"><path d="M1 13l2-5.5h13L13.5 13z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M1 13V5h5l1.5 1.5H15v2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></symbol>
+<symbol id="icon-folder" viewBox="0 0 16 16"><path d="M1 13V5h5l1.5 2H15v6z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></symbol>
+<symbol id="icon-download" viewBox="0 0 16 16"><line x1="8" y1="1" x2="8" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="5,7 8,10 11,7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12.5v2h12v-2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="icon-upload" viewBox="0 0 16 16"><line x1="8" y1="10" x2="8" y2="1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="5,4 8,1 11,4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12.5v2h12v-2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="icon-zip" viewBox="0 0 16 16"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M2 6l1-3h10l1 3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><line x1="8" y1="8" x2="8" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="1.5,2"/></symbol>
+<symbol id="icon-settings" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.3 3.3l1.4 1.4M11.3 11.3l1.4 1.4M3.3 12.7l1.4-1.4M11.3 4.7l1.4-1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-moon" viewBox="0 0 16 16"><path d="M13.5 10a6 6 0 01-7.5-7.5A6 6 0 1013.5 10z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="1" x2="8" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="3" x2="4.5" y2="4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11.5" y1="11.5" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="13" x2="4.5" y2="11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="11.5" y1="4.5" x2="13" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-image" viewBox="0 0 16 16"><rect x="1" y="2" width="14" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="5.5" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/><polyline points="1,12 5,8 8,11 10,9 15,13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-type" viewBox="0 0 16 16"><line x1="2" y1="3" x2="14" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="3" x2="8" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="5" y1="13" x2="11" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-rect" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="icon-film" viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M4 3v10M12 3v10" stroke="currentColor" stroke-width="1.5"/><path d="M1 6h3M12 6h3M1 10h3M12 10h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-stretch" viewBox="0 0 16 16"><line x1="2" y1="4.5" x2="14" y2="4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="11.5" x2="14" y2="11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-grid9" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="13" height="13" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="6" y1="1.5" x2="6" y2="14.5" stroke="currentColor" stroke-width="1"/><line x1="10" y1="1.5" x2="10" y2="14.5" stroke="currentColor" stroke-width="1"/><line x1="1.5" y1="6" x2="14.5" y2="6" stroke="currentColor" stroke-width="1"/><line x1="1.5" y1="10" x2="14.5" y2="10" stroke="currentColor" stroke-width="1"/></symbol>
+<symbol id="icon-fit" viewBox="0 0 16 16"><polyline points="5,2 2,2 2,5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="11,2 14,2 14,5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="2,11 2,14 5,14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14,11 14,14 11,14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-skip-start" viewBox="0 0 16 16"><line x1="3" y1="3" x2="3" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polygon points="13,3 5,8 13,13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></symbol>
+<symbol id="icon-play" viewBox="0 0 16 16"><polygon points="4,2 14,8 4,14" fill="currentColor"/></symbol>
+<symbol id="icon-pause" viewBox="0 0 16 16"><rect x="3" y="2" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="9.5" y="2" width="3.5" height="12" rx="1" fill="currentColor"/></symbol>
+<symbol id="icon-rewind" viewBox="0 0 16 16"><polyline points="9.5,3 3.5,8 9.5,13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14.5,3 8.5,8 14.5,13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-fastforward" viewBox="0 0 16 16"><polyline points="6.5,3 12.5,8 6.5,13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="1.5,3 7.5,8 1.5,13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-music" viewBox="0 0 16 16"><circle cx="4.5" cy="11.5" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="11.5" cy="9.5" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/><polyline points="6.5,11.5 6.5,4 13.5,2 13.5,9.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/></symbol>
+<symbol id="icon-target" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/></symbol>
+<symbol id="icon-close" viewBox="0 0 16 16"><line x1="3" y1="3" x2="13" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="3" x2="3" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-add" viewBox="0 0 16 16"><line x1="8" y1="2" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-edit" viewBox="0 0 16 16"><path d="M11 1.5l3.5 3.5-9 9H2v-3.5z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><line x1="9.5" y1="3" x2="13" y2="6.5" stroke="currentColor" stroke-width="1.5"/></symbol>
+<symbol id="icon-trash" viewBox="0 0 16 16"><line x1="2" y1="4" x2="14" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M5 4V2.5A.5.5 0 015.5 2h5a.5.5 0 01.5.5V4" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M13 4l-1 10H4L3 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><line x1="7" y1="7" x2="7" y2="11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="9" y1="7" x2="9" y2="11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></symbol>
+<symbol id="icon-undo" viewBox="0 0 16 16"><path d="M13 4V8a3 3 0 01-3 3H3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="5,8 3,11 5,14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-redo" viewBox="0 0 16 16"><path d="M3 4V8a3 3 0 003 3h7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polyline points="11,8 13,11 11,14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="icon-eye" viewBox="0 0 16 16"><path d="M1 8C2.5 5.5 5 3.5 8 3.5S13.5 5.5 15 8C13.5 10.5 11 12.5 8 12.5S2.5 10.5 1 8z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol>
+<symbol id="icon-eye-off" viewBox="0 0 16 16"><path d="M1 8C2.5 5.5 5 3.5 8 3.5S13.5 5.5 15 8C13.5 10.5 11 12.5 8 12.5S2.5 10.5 1 8z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round" opacity=".3"/><line x1="2.5" y1="2.5" x2="13.5" y2="13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="icon-lock-on" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="8" cy="11" r="1.2" fill="currentColor"/></symbol>
+<symbol id="icon-lock-off" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".3"/></symbol>
+<symbol id="icon-search" viewBox="0 0 16 16"><circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="10" y1="10" x2="14" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+</defs></svg>
+
+<!-- HEADER -->
+<header id="header">
+  <div class="logo">UIS <em>Storyboard</em><span id="dirty-dot" title="未保存の変更があります" style="display:none;color:var(--accent4);margin-left:4px;font-size:10px;">●</span></div>
+  <div class="vdiv"></div>
+  <button class="btn" onclick="App.newProject()"><svg class="icon" aria-hidden="true"><use href="#icon-new"/></svg> <span data-i18n="header.new">New</span></button>
+  <button class="btn" onclick="App.showSaveDialog()"><svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg> <span data-i18n="header.save">Save</span></button>
+  <button class="btn" onclick="App.showLoadDialog()"><svg class="icon" aria-hidden="true"><use href="#icon-folder-open"/></svg> <span data-i18n="header.load">Load</span></button>
+  <div class="vdiv"></div>
+  <button class="btn btn-icon" id="btn-undo" onclick="History.undo()" disabled data-i18n-tip="header.undo_tip" data-tip="元に戻す [Ctrl+Z]"><svg class="icon" aria-hidden="true"><use href="#icon-undo"/></svg></button>
+  <button class="btn btn-icon" id="btn-redo" onclick="History.redo()" disabled data-i18n-tip="header.redo_tip" data-tip="やり直す [Ctrl+Y]"><svg class="icon" aria-hidden="true"><use href="#icon-redo"/></svg></button>
+  <div class="vdiv"></div>
+  <button class="btn" onclick="document.getElementById('uis-import-in').click()"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg> <span data-i18n="header.uis_import">UIS読み込み</span></button>
+  <button class="btn btn-primary" onclick="App.exportUIS()"><svg class="icon" aria-hidden="true"><use href="#icon-upload"/></svg> <span data-i18n="header.export_uis">Export .uis</span></button>
+  <button class="btn btn-primary" id="btn-export-zip" onclick="App.exportZIP()"><svg class="icon" aria-hidden="true"><use href="#icon-zip"/></svg> <span data-i18n="header.export_zip">ZIP Export</span></button>
+  <div class="spacer"></div>
+  <div id="time-display">0:00.000</div>
+  <div class="vdiv"></div>
+  <div id="lang-switcher">
+    <button class="lang-btn on" data-lang="ja" onclick="I18n.setLang('ja')">日本語</button>
+    <button class="lang-btn" data-lang="en" onclick="I18n.setLang('en')">EN</button>
+    <button class="lang-btn" data-lang="zh" onclick="I18n.setLang('zh')">中文</button>
+  </div>
+  <div class="vdiv"></div>
+  <div class="theme-toggle" onclick="Theme.toggle()">
+    <div class="tt-opt" id="tt-dark"><svg class="icon icon-sm" aria-hidden="true"><use href="#icon-moon"/></svg></div>
+    <div class="tt-opt on" id="tt-light"><svg class="icon icon-sm" aria-hidden="true"><use href="#icon-sun"/></svg></div>
+  </div>
+  <button class="btn btn-icon" onclick="App.openSettings()" data-i18n-tip="header.settings_tip" data-tip="設定"><svg class="icon" aria-hidden="true"><use href="#icon-settings"/></svg></button>
+</header>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- LEFT PANEL -->
+  <div id="panel-left">
+    <div class="tabs">
+      <div class="tab on" onclick="UI.switchTab('layers',this)" data-i18n="tabs.layers">レイヤー</div>
+      <div class="tab" onclick="UI.switchTab('resources',this)" data-i18n="tabs.resources">リソース</div>
+    </div>
+
+    <!-- Layers tab -->
+    <div class="tab-panel on" id="tab-layers">
+      <div id="add-btns">
+        <button class="add-btn" onclick="Elements.beginAdd('image')"><svg class="icon icon-lg" aria-hidden="true"><use href="#icon-image"/></svg>Image</button>
+        <button class="add-btn" onclick="Elements.beginAdd('text')"><svg class="icon icon-lg" aria-hidden="true"><use href="#icon-type"/></svg>Text</button>
+        <button class="add-btn" onclick="Elements.beginAdd('rect')"><svg class="icon icon-lg" aria-hidden="true"><use href="#icon-rect"/></svg>Rect</button>
+        <button class="add-btn" onclick="Elements.beginAdd('anim')"><svg class="icon icon-lg" aria-hidden="true"><use href="#icon-film"/></svg>Anim</button>
+        <button class="add-btn" onclick="Elements.beginAdd('stretch')"><svg class="icon icon-lg" aria-hidden="true"><use href="#icon-stretch"/></svg>Stretch</button>
+        <button class="add-btn" onclick="Elements.beginAdd('ninepatch')"><svg class="icon icon-lg" aria-hidden="true"><use href="#icon-grid9"/></svg>9patch</button>
+      </div>
+      <div id="layer-search-wrap">
+        <svg class="icon icon-sm" aria-hidden="true" style="color:var(--tx2);flex-shrink:0"><use href="#icon-search"/></svg>
+        <input id="layer-search" type="text" placeholder="フィルター..." autocomplete="off"
+          oninput="LayersPanel.setFilter(this.value)" />
+        <button id="layer-search-clear" onclick="document.getElementById('layer-search').value='';LayersPanel.setFilter('')" title="クリア">✕</button>
+      </div>
+      <div id="layer-list"></div>
+    </div>
+
+    <!-- Resources tab -->
+    <div class="tab-panel" id="tab-resources">
+      <div id="res-panel">
+        <div class="res-sec-hdr">
+          <span data-i18n="res.images">画像</span>
+          <button class="res-add" onclick="document.getElementById('res-img-in').click()">+</button>
+        </div>
+        <div class="res-img-grid" id="res-img-grid"></div>
+        <div class="res-sec-hdr" style="margin-top:8px;">
+          <span data-i18n="res.audio">音声</span>
+          <button class="res-add" onclick="document.getElementById('audio-in').click()">+</button>
+        </div>
+        <div id="res-audio-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div id="center">
+
+    <!-- Canvas -->
+    <div id="canvas-wrap">
+      <div id="canvas-grid"></div>
+      <div id="canvas-stage">
+        <div id="canvas-elems"></div>
+        <div id="snap-lines" style="position:absolute;inset:0;pointer-events:none;z-index:998;"></div>
+      </div>
+      <div id="zoom-hud">
+        <button class="zh-btn" onclick="Canvas.zoomBy(-0.1)" data-i18n-tip="canvas.zoom_out" data-tip="縮小">−</button>
+        <div id="zoom-pct">50%</div>
+        <button class="zh-btn" onclick="Canvas.zoomBy(+0.1)" data-i18n-tip="canvas.zoom_in" data-tip="拡大">+</button>
+        <button class="zh-btn" onclick="Canvas.fit()" data-i18n-tip="canvas.fit" data-tip="フィット"><svg class="icon icon-sm" aria-hidden="true"><use href="#icon-fit"/></svg></button>
+      </div>
+      <div id="canvas-size-info">1920×1080</div>
+    </div>
+
+    <!-- Transport -->
+    <div id="transport">
+      <button class="tp-btn" onclick="Audio.seek(0)" data-i18n-tip="transport.to_start" data-tip="先頭"><svg class="icon" aria-hidden="true"><use href="#icon-skip-start"/></svg></button>
+      <button class="tp-btn" id="tp-play" onclick="Audio.toggle()" data-i18n-tip="transport.play_pause" data-tip="再生/停止 [Space]"><svg class="icon" aria-hidden="true"><use href="#icon-play"/></svg></button>
+      <button class="tp-btn" onclick="Audio.seekRel(-5000)" data-tip="-5s"><svg class="icon" aria-hidden="true"><use href="#icon-rewind"/></svg></button>
+      <button class="tp-btn" onclick="Audio.seekRel(+5000)" data-tip="+5s"><svg class="icon" aria-hidden="true"><use href="#icon-fastforward"/></svg></button>
+      <div class="vdiv"></div>
+      <button class="audio-btn" onclick="document.getElementById('audio-in').click()"><svg class="icon" aria-hidden="true"><use href="#icon-music"/></svg> <span data-i18n="transport.select_audio">音源を選択</span></button>
+      <input type="file" id="audio-in" accept="audio/*" style="display:none" onchange="Audio.load(this)">
+      <div id="waveform-wrap" onclick="Audio.seekByClick(event)">
+        <canvas id="waveform-cv"></canvas>
+        <div id="wv-playhead"></div>
+      </div>
+      <div id="dur-display">0:00.0 / 0:00.0</div>
+      <div class="vdiv"></div>
+      <button class="audio-btn chart-load-btn" onclick="document.getElementById('chart-in').click()" data-i18n-tip="transport.chart_tip" data-tip="譜面ファイル (.mc) を読み込む"><svg class="icon" aria-hidden="true"><use href="#icon-target"/></svg> <span data-i18n="transport.load_chart">譜面読み込み</span></button>
+      <input type="file" id="chart-in" accept=".mc" style="display:none" onchange="App.loadChart(this)">
+      <span id="chart-info" style="font-size:10px;color:var(--tx2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+      <button class="tp-btn" onclick="App.clearChart()" data-i18n-tip="transport.clear_chart" data-tip="譜面をクリア" id="chart-clear-btn" style="display:none"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button>
+      <label style="font-size:10px;color:var(--tx2);margin-left:4px;white-space:nowrap;"><span data-i18n="transport.speed">速度</span>
+        <input id="approach-ms" type="number" value="1500" min="200" max="8000" step="100"
+               style="width:56px;margin-left:3px;background:var(--bg2);border:1px solid var(--border);color:var(--tx);border-radius:3px;padding:1px 4px;font-size:10px;"
+               onchange="App.setApproachMs(this.value)" data-i18n-title="transport.speed_title" title="ノーツが判定ラインに到達するまでの時間 (ms)">ms
+      </label>
+    </div>
+
+    <!-- Timeline -->
+    <div id="timeline">
+      <div id="tl-hdr">
+        <div id="tl-lbl-hdr">
+          <span>Tracks</span>
+          <div class="tl-zoom-grp">
+            <button class="tl-zoom-btn" onclick="Timeline.zoomStep(-1)">−</button>
+            <button class="tl-zoom-btn" onclick="Timeline.zoomStep(+1)">+</button>
+          </div>
+        </div>
+        <div id="tl-ruler-wrap"><canvas id="tl-ruler-cv"></canvas></div>
+      </div>
+      <div id="tl-body">
+        <div id="tl-labels"></div>
+        <div id="tl-scroll-area" onscroll="Timeline.onScroll(this)" oncontextmenu="Timeline.onContextMenu(event)">
+          <div id="tl-canvas-wrap">
+            <canvas id="tl-cv"></canvas>
+            <div id="tl-playhead"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div id="panel-right">
+    <div class="sec-hdr" data-i18n="panel.properties">プロパティ</div>
+    <div id="props-scroll"></div>
+    <div id="code-panel">
+      <div class="sec-hdr">
+        <span data-i18n="panel.uis_preview">UIS Preview</span>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-sm" onclick="CodeGen.showFullPreview()" data-i18n="panel.full_preview">全表示</button>
+          <button class="btn btn-sm copy-btn" onclick="CodeGen.copy(this)">Copy</button>
+        </div>
+      </div>
+      <div id="code-pre"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STATUS BAR -->
+<div id="statusbar">
+  <div class="sb-group">
+    <span id="sb-elems">0 要素</span>
+    <span class="sb-sep">·</span>
+    <span id="sb-anims">0 アニメーション</span>
+  </div>
+  <div class="sb-group">
+    <span id="sb-zoom">—</span>
+    <span class="sb-sep">·</span>
+    <span id="sb-time">0:00.00</span>
+    <span class="sb-sep">·</span>
+    <button class="sb-help" onclick="App.showShortcuts()" data-tip="ショートカット一覧 [?]">?</button>
+  </div>
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- Add Element -->
+<div class="modal-backdrop hidden" id="m-add-elem">
+  <div class="modal">
+    <div class="modal-hdr"><span id="m-add-title" data-i18n="modal_add_elem.title">要素を追加</span><button class="modal-close" onclick="UI.closeModal('m-add-elem')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body">
+      <div class="modal-row"><div class="modal-lbl" data-i18n="modal_add_elem.name_lbl">要素名</div><input class="modal-field" id="m-add-name" data-i18n-ph="modal_add_elem.name_ph" placeholder="例: BG"/></div>
+      <div class="modal-row" id="m-add-tex-row">
+        <div class="modal-lbl" data-i18n="modal_add_elem.image_lbl">画像</div>
+        <input class="modal-field" id="m-add-tex" placeholder="bg.png" style="flex:1"/>
+        <button class="tex-pick-btn" onclick="ResPicker.open('m-add-tex')"><svg class="icon" aria-hidden="true"><use href="#icon-folder"/></svg></button>
+      </div>
+      <div class="modal-row hidden" id="m-add-text-row"><div class="modal-lbl" data-i18n="modal_add_elem.text_lbl">テキスト</div><input class="modal-field" id="m-add-textval" data-i18n-ph="modal_add_elem.text_ph" placeholder="表示テキスト"/></div>
+      <div class="modal-row hidden" id="m-add-color-row">
+        <div class="modal-lbl" data-i18n="modal_add_elem.color_lbl">色</div>
+        <input type="color" class="modal-field" id="m-add-color" value="#000000" style="width:32px;flex:none;padding:1px;height:24px"/>
+        <input class="modal-field" id="m-add-colorhex" value="#000000" style="flex:1"/>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="UI.closeModal('m-add-elem')" data-i18n="modal_add_elem.cancel">キャンセル</button><button class="btn btn-primary" onclick="Elements.confirmAdd()" data-i18n="modal_add_elem.add">追加</button></div>
+  </div>
+</div>
+
+<!-- Add / Edit Animation -->
+<div class="modal-backdrop hidden" id="m-add-anim">
+  <div class="modal">
+    <div class="modal-hdr"><span data-i18n="modal_anim.add_title">アニメーションを追加</span><button class="modal-close" onclick="UI.closeModal('m-add-anim')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body">
+      <div class="modal-row"><div class="modal-lbl" data-i18n="modal_anim.type_lbl">種類</div>
+        <select class="modal-sel" id="ma-type" onchange="Animations.onTypeChange()">
+          <option value="fade" data-i18n="anim_type.fade">fade — 透明度</option>
+          <option value="movex" data-i18n="anim_type.movex">movex — X座標</option>
+          <option value="movey" data-i18n="anim_type.movey">movey — Y座標</option>
+          <option value="move" data-i18n="anim_type.move">move — XY座標</option>
+          <option value="rotate" data-i18n="anim_type.rotate">rotate — 回転</option>
+          <option value="scale" data-i18n="anim_type.scale">scale — 倍率</option>
+          <option value="scalex" data-i18n="anim_type.scalex">scalex — X倍率</option>
+          <option value="scaley" data-i18n="anim_type.scaley">scaley — Y倍率</option>
+          <option value="size" data-i18n="anim_type.size">size — サイズ</option>
+          <option value="width" data-i18n="anim_type.width">width — 幅</option>
+          <option value="height" data-i18n="anim_type.height">height — 高さ</option>
+          <option value="tint" data-i18n="anim_type.tint">tint — 色</option>
+          <option value="skew" data-i18n="anim_type.skew">skew — 歪み</option>
+          <option value="skewx" data-i18n="anim_type.skewx">skewx — X歪み</option>
+          <option value="skewy" data-i18n="anim_type.skewy">skewy — Y歪み</option>
+          <option value="show">show — 表示</option>
+          <option value="hide">hide — 非表示</option>
+        </select>
+      </div>
+      <!-- time mode (全アニメーション共通) -->
+      <div class="modal-row" id="ma-row-time-mode"><div class="modal-lbl">モード</div>
+        <select class="modal-sel" id="ma-time-mode">
+          <option value="atime">atime（音楽同期）</option>
+          <option value="time">time（自由動作）</option>
+        </select>
+      </div>
+      <!-- time form (show/hide では非表示) -->
+      <div class="modal-row" id="ma-row-time-form"><div class="modal-lbl">時刻形式</div>
+        <select class="modal-sel" id="ma-time-form" onchange="Animations.onTimeFormChange()">
+          <option value="end">単一値 (0→n)</option>
+          <option value="range">絶対範囲 (n1, n2)</option>
+          <option value="plus" selected>開始＋継続 (n1, +x)</option>
+        </select>
+      </div>
+      <!-- from/to -->
+      <div class="modal-row" id="ma-row-from"><div class="modal-lbl" data-i18n="modal_anim.from_lbl">from</div><input class="modal-field" id="ma-from" data-i18n-ph="modal_anim.from_ph" placeholder="変化前 (省略可)"/></div>
+      <div class="modal-row hidden" id="ma-row-from-xy">
+        <div class="modal-lbl" data-i18n="modal_anim.from_lbl">from</div>
+        <div style="display:flex;gap:6px;flex:1">
+          <label style="display:flex;align-items:center;gap:4px;flex:1"><span id="ma-from-x-lbl" style="font-size:10px;color:var(--tx2);min-width:16px;text-align:right">X</span><input class="modal-field" id="ma-from-x" type="text" placeholder="省略可" style="flex:1"/></label>
+          <label style="display:flex;align-items:center;gap:4px;flex:1"><span id="ma-from-y-lbl" style="font-size:10px;color:var(--tx2);min-width:16px;text-align:right">Y</span><input class="modal-field" id="ma-from-y" type="text" placeholder="省略可" style="flex:1"/></label>
+        </div>
+      </div>
+      <div class="modal-row" id="ma-row-to"><div class="modal-lbl" data-i18n="modal_anim.to_lbl">to</div><input class="modal-field" id="ma-to" data-i18n-ph="modal_anim.to_ph" placeholder="変化後"/></div>
+      <div class="modal-err hidden" id="ma-to-err">値を入力してください</div>
+      <div class="modal-row hidden" id="ma-row-to-xy">
+        <div class="modal-lbl" data-i18n="modal_anim.to_lbl">to</div>
+        <div style="display:flex;gap:6px;flex:1">
+          <label style="display:flex;align-items:center;gap:4px;flex:1"><span id="ma-to-x-lbl" style="font-size:10px;color:var(--tx2);min-width:16px;text-align:right">X</span><input class="modal-field" id="ma-to-x" type="text" style="flex:1"/></label>
+          <label style="display:flex;align-items:center;gap:4px;flex:1"><span id="ma-to-y-lbl" style="font-size:10px;color:var(--tx2);min-width:16px;text-align:right">Y</span><input class="modal-field" id="ma-to-y" type="text" style="flex:1"/></label>
+        </div>
+      </div>
+      <div class="modal-err hidden" id="ma-to-xy-err">X または Y を入力してください</div>
+      <!-- 時刻入力 -->
+      <div class="modal-row hidden" id="ma-row-start"><div class="modal-lbl" id="ma-start-lbl">開始 (ms)</div><input class="modal-field" id="ma-start" type="number" value="0"/></div>
+      <div class="modal-row" id="ma-row-end"><div class="modal-lbl">終了 (ms)</div><input class="modal-field" id="ma-end" type="number" value="1000"/></div>
+      <div class="modal-row hidden" id="ma-row-duration"><div class="modal-lbl">継続 (ms)</div><input class="modal-field" id="ma-duration" type="number" value="1000"/></div>
+      <div class="modal-err hidden" id="ma-time-err">終了時刻は開始時刻より大きい必要があります</div>
+      <!-- イージング -->
+      <div class="modal-row" id="ma-row-trans"><div class="modal-lbl" data-i18n="modal_anim.easing_lbl">イージング</div>
+        <select class="modal-sel" id="ma-trans" onchange="Animations.onTransChange()">
+          <option value="">なし</option>
+          <option value="easein">easein</option>
+          <option value="easeout">easeout</option>
+          <option value="custom">手入力</option>
+        </select>
+      </div>
+      <div class="modal-row hidden" id="ma-row-trans-custom">
+        <div class="modal-lbl"></div>
+        <div class="bezier-inputs">
+          <span class="bezier-paren">(</span>
+          <input type="number" class="modal-field bezier-val" id="ma-trans-b0" placeholder="x1" step="0.01" oninput="Animations.onBezierInput()">
+          <span class="bezier-sep">,</span>
+          <input type="number" class="modal-field bezier-val" id="ma-trans-b1" placeholder="y1" step="0.01" oninput="Animations.onBezierInput()">
+          <span class="bezier-sep">,</span>
+          <input type="number" class="modal-field bezier-val" id="ma-trans-b2" placeholder="x2" step="0.01" oninput="Animations.onBezierInput()">
+          <span class="bezier-sep">,</span>
+          <input type="number" class="modal-field bezier-val" id="ma-trans-b3" placeholder="y2" step="0.01" oninput="Animations.onBezierInput()">
+          <span class="bezier-paren">)</span>
+        </div>
+      </div>
+      <div class="modal-row" id="ma-row-easing-preview">
+        <div class="modal-lbl" style="font-size:9px;color:var(--tx2)">preview</div>
+        <canvas id="ma-easing-canvas" width="200" height="72"></canvas>
+      </div>
+      <div class="modal-row" id="ma-row-repeat"><div class="modal-lbl" data-i18n="modal_anim.repeat_lbl">繰り返し</div><input class="modal-field" id="ma-repeat" data-i18n-ph="modal_anim.repeat_ph" placeholder="例: 3, r5, (3,1000)"/></div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="UI.closeModal('m-add-anim')" data-i18n="modal_anim.cancel">キャンセル</button><button class="btn btn-primary" id="m-anim-confirm-btn" onclick="Animations.confirmAdd()" data-i18n="modal_anim.add_btn">追加</button></div>
+  </div>
+</div>
+
+<!-- Settings -->
+<div class="modal-backdrop hidden" id="m-settings">
+  <div class="modal">
+    <div class="modal-hdr"><span><svg class="icon" aria-hidden="true"><use href="#icon-settings"/></svg> <span data-i18n="modal_settings.title">設定</span></span><button class="modal-close" onclick="UI.closeModal('m-settings')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body">
+      <div class="modal-row"><div class="modal-lbl" data-i18n="modal_settings.width">幅</div><input class="modal-field" id="s-width" type="number" value="1920"/></div>
+      <div class="modal-row"><div class="modal-lbl" data-i18n="modal_settings.height">高さ</div><input class="modal-field" id="s-height" type="number" value="1080"/></div>
+      <div class="modal-row"><div class="modal-lbl">@unit</div><input class="modal-field" id="s-unit" type="number" value="1080"/></div>
+      <div class="modal-row"><div class="modal-lbl">@angle</div><input class="modal-field" id="s-angle" type="number" value="45"/></div>
+      <div class="modal-row"><div class="modal-lbl">Apply 3D</div><input type="checkbox" id="s-3d" checked style="width:15px;height:15px;cursor:pointer;accent-color:var(--accent)"/></div>
+      <div class="modal-row"><div class="modal-lbl" data-i18n="modal_settings.audio_offset">音声オフセット (ms)</div><input class="modal-field" id="s-audio-offset" type="number" value="0" step="1"/></div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="UI.closeModal('m-settings')" data-i18n="modal_settings.cancel">キャンセル</button><button class="btn btn-primary" onclick="App.applySettings()" data-i18n="modal_settings.apply">適用</button></div>
+  </div>
+</div>
+
+<!-- Save Dialog -->
+<div class="modal-backdrop hidden" id="m-save">
+  <div class="modal">
+    <div class="modal-hdr"><span><svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg> <span data-i18n="modal_save.title">プロジェクトを保存</span></span><button class="modal-close" onclick="UI.closeModal('m-save')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body">
+      <div class="modal-row"><div class="modal-lbl" data-i18n="modal_save.filename">ファイル名</div><input class="modal-field" id="save-name" placeholder="storyboard"/></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="UI.closeModal('m-save')" data-i18n="modal_save.cancel">キャンセル</button>
+      <button class="btn" id="btn-save-idb" onclick="App.saveToIndexedDB()"><svg class="icon" aria-hidden="true"><use href="#icon-save"/></svg> <span data-i18n="modal_save.save_browser">ブラウザに保存</span></button>
+      <button class="btn btn-primary" onclick="App.saveToBrowser()"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg> <span data-i18n="modal_save.download">ダウンロード</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Load Dialog -->
+<div class="modal-backdrop hidden" id="m-load">
+  <div class="modal" style="width:520px">
+    <div class="modal-hdr"><span><svg class="icon" aria-hidden="true"><use href="#icon-folder-open"/></svg> <span data-i18n="modal_load.title">プロジェクトを読み込む</span></span><button class="modal-close" onclick="UI.closeModal('m-load')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body">
+      <div style="font-size:10px;color:var(--tx2);margin-bottom:6px;" data-i18n="modal_load.browser_saved">ブラウザ保存済み</div>
+      <div id="load-idb-list" style="display:flex;flex-direction:column;gap:4px;max-height:220px;overflow-y:auto;"></div>
+      <div style="border-top:1px solid var(--bdr);margin-top:10px;padding-top:8px;">
+        <button class="btn" onclick="document.getElementById('load-file-in').click()"><svg class="icon" aria-hidden="true"><use href="#icon-folder"/></svg> <span data-i18n="modal_load.open_json">JSONファイルを開く</span></button>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="UI.closeModal('m-load')" data-i18n="modal_load.close">閉じる</button></div>
+  </div>
+</div>
+
+<!-- Resource Picker -->
+<div class="modal-backdrop hidden" id="m-res-picker">
+  <div class="modal">
+    <div class="modal-hdr"><span><svg class="icon" aria-hidden="true"><use href="#icon-image"/></svg> <span data-i18n="modal_res.title">画像を選択</span></span><button class="modal-close" onclick="UI.closeModal('m-res-picker')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body">
+      <div class="rp-grid" id="rp-grid"></div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="UI.closeModal('m-res-picker')" data-i18n="modal_res.cancel">キャンセル</button><button class="btn btn-primary" onclick="ResPicker.confirm()" data-i18n="modal_res.select">選択</button></div>
+  </div>
+</div>
+
+<!-- Context menu -->
+<div id="ctx-menu" class="hidden">
+  <div class="ctx-item" id="ctx-add-anim"  onclick="Timeline.ctxAddAnim()"><svg class="icon" aria-hidden="true"><use href="#icon-add"/></svg> <span data-i18n="ctx.add_anim">アニメーション追加</span></div>
+  <div class="ctx-item" id="ctx-edit-anim" onclick="Timeline.ctxEditAnim()"><svg class="icon" aria-hidden="true"><use href="#icon-edit"/></svg> <span data-i18n="ctx.edit_anim">アニメーション編集</span></div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" id="ctx-del-anim" onclick="Timeline.ctxDelAnim()"><svg class="icon" aria-hidden="true"><use href="#icon-trash"/></svg> <span data-i18n="ctx.delete">削除</span></div>
+</div>
+
+<!-- UIS File Select Dialog -->
+<div class="modal-backdrop hidden" id="m-uis-select">
+  <div class="modal" style="width:400px">
+    <div class="modal-hdr"><span data-i18n="modal_uis_select.title">UISファイルを選択</span><button class="modal-close" onclick="UI.closeModal('m-uis-select')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--tx1);margin-bottom:8px" data-i18n="modal_uis_select.desc">読み込むUISファイルを選択してください</div>
+      <div id="m-uis-select-list" style="display:flex;flex-direction:column;gap:4px;max-height:320px;overflow-y:auto;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="UI.closeModal('m-uis-select')" data-i18n="modal_confirm.cancel">キャンセル</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="modal-backdrop hidden" id="m-confirm">
+  <div class="modal" style="width:360px">
+    <div class="modal-hdr"><span data-i18n="modal_confirm.title">確認</span></div>
+    <div class="modal-body">
+      <div id="m-confirm-msg" style="font-size:13px;color:var(--tx0);line-height:1.6;padding:4px 0;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="UI.closeModal('m-confirm')" data-i18n="modal_confirm.cancel">キャンセル</button>
+      <button class="btn btn-primary" onclick="UI._confirmOk()" data-i18n="modal_confirm.ok">続行</button>
+    </div>
+  </div>
+</div>
+
+<!-- Alert Dialog -->
+<div class="modal-backdrop hidden" id="m-alert">
+  <div class="modal" style="width:360px">
+    <div class="modal-hdr"><span data-i18n="modal_alert.title">通知</span></div>
+    <div class="modal-body">
+      <div id="m-alert-msg" style="font-size:13px;color:var(--tx0);line-height:1.6;padding:4px 0;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="UI.closeModal('m-alert')">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- UIS Full Preview -->
+<div class="modal-backdrop hidden" id="m-uis-preview">
+  <div class="modal" style="width:660px;max-width:92vw">
+    <div class="modal-hdr"><span data-i18n="modal_uis.title">UIS コード</span><button class="modal-close" onclick="UI.closeModal('m-uis-preview')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button></div>
+    <div class="modal-body" style="padding:0">
+      <textarea id="m-uis-code" readonly style="width:100%;height:480px;resize:vertical;background:var(--bg2);color:var(--tx0);border:none;outline:none;padding:12px 14px;font-family:monospace;font-size:11px;line-height:1.6;box-sizing:border-box;display:block;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="UI.closeModal('m-uis-preview')" data-i18n="modal_uis.close">閉じる</button>
+      <button class="btn btn-primary copy-btn" onclick="CodeGen.copy(this)">Copy</button>
+    </div>
+  </div>
+</div>
+
+<!-- Keyboard Shortcuts -->
+<div class="modal-backdrop hidden" id="m-shortcuts">
+  <div class="modal" style="width:440px">
+    <div class="modal-hdr">
+      <span data-i18n="shortcuts.title">キーボードショートカット</span>
+      <button class="modal-close" onclick="UI.closeModal('m-shortcuts')"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button>
+    </div>
+    <div class="modal-body" style="padding:0;max-height:70vh;overflow-y:auto">
+      <table class="shortcuts-table">
+        <tr><td class="sc-key">Space</td><td data-i18n="sc.play_pause">再生 / 停止</td></tr>
+        <tr><td class="sc-key">Ctrl+Z</td><td data-i18n="sc.undo">元に戻す</td></tr>
+        <tr><td class="sc-key">Ctrl+Y / Ctrl+Shift+Z</td><td data-i18n="sc.redo">やり直す</td></tr>
+        <tr><td class="sc-key">Ctrl+S</td><td data-i18n="sc.save">保存ダイアログを開く</td></tr>
+        <tr><td class="sc-key">Ctrl+D</td><td data-i18n="sc.duplicate">選択要素を複製</td></tr>
+        <tr><td class="sc-key">Delete / Backspace</td><td data-i18n="sc.delete">選択要素を削除</td></tr>
+        <tr><td class="sc-key">[ / ]</td><td data-i18n="sc.tl_scroll">タイムラインを左右スクロール</td></tr>
+        <tr><td class="sc-key">Escape</td><td data-i18n="sc.close_modal">モーダルを閉じる</td></tr>
+        <tr><td class="sc-key">?</td><td data-i18n="sc.show_shortcuts">このダイアログを表示</td></tr>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="UI.closeModal('m-shortcuts')" data-i18n="modal_load.close">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="res-img-in" accept="image/*" multiple style="display:none" onchange="Resources.loadImages(this)">
+<input type="file" id="load-file-in" accept=".json" style="display:none" onchange="App.loadFile(this)">
+<input type="file" id="uis-import-in" webkitdirectory style="display:none" onchange="App.importUIS(this)">
+
+<div id="toast-container"></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
