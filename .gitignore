@@ -1,6 +1,5 @@
 # Gitで管理しないファイル・ディレクトリ
 CLAUDE.md
-docs/
 *.mc
 *.uis
 .claude/
