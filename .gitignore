@@ -1,5 +1,7 @@
 # Gitで管理しないファイル・ディレクトリ
 CLAUDE.md
+docs/ストーリーボードエディター.md
+docs/mc-format-spec.md
 *.mc
 *.uis
 .claude/
